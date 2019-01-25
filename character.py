@@ -10,7 +10,8 @@ from copy import deepcopy
 
 
 class character():
-    def __init__(self,Index=0, Id=0 ,Name=0, Data=0, Action_Skill=0, Limit_Burst=0, States=0):
+    def __init__(self,Index=0, Type = 0, Id=0 ,Name=0, Data=0, Action_Skill=0, Limit_Burst=0, States=0):
+        self.Type = Type
         self.Index = Index
         self.Id = Id
         self.Name = Name
@@ -32,15 +33,24 @@ def get_char_list_soup(index):
     url = home_url + '/character_list/{}.html?filter=#{}'.format(index,index)
     return get_soup(url)
 
-def get_all_char_id_name(soup):
+
+def get_Type(page_index):
+    return {
+        '1':'前排',
+        '2':'中排',
+        '3':'後排'
+    }.get(page_index,'error Type')
+
+def get_all_char_id_name(page_index, soup):
     list_all_char_db = []
     # 方便測試先以find
-    all_td = soup.find('td')
+    all_td = soup.find_all('td')
     for i , td in enumerate(all_td):
         char = character()
         a = td.find('a')
         # 建立角色的id
         try:
+            char.Type = get_Type(str(page_index))
             char.Index = i
             char.Id = re.findall(r'\d+', str(a.get('href')))[0]
             # href = a.get('href').replace('..', '')
@@ -49,7 +59,7 @@ def get_all_char_id_name(soup):
             list_all_char_db.append(char)
         except:
             print("no href")
-        # print char.Index, char.Id,char.Name
+        # print char.Type, char.Index, char.Id, char.Name
 
     return list_all_char_db
 
@@ -57,7 +67,7 @@ def get_char_detail(Index ,char):
     Id = char.Id
     df_Data = create_table(Id, 'detail__data--txt', 'Data')
     df_Action_Skill = create_table(Id, 'detail__skill--txt', 'Action_Skill')
-    print Index , char.Index
+    print Index ,char.Type, char.Index, char.Id, char.Name
     if Index == char.Index:
         char.Data = deepcopy(df_Data)
         char.Action_Skill = deepcopy(df_Action_Skill)
@@ -90,6 +100,7 @@ def create_table(Id,class_name, column_name):
     return df    
 
 def find_state(df_Action_Skill):
+    # 需要紀錄狀態對特定種族
     s = []
     status_list = status.get_status_list()
     for state in status_list['name']:
@@ -102,12 +113,12 @@ if __name__ == "__main__":
     df_all_char_db = pd.DataFrame(columns=['Id','Name','Data','Action_Skill','Limit_Burst','States'])
     home_url = 'http://jam-capture-vcon-ww.ateamid.com/zh_TW'
     
-    for index in range(1,2):
-        soup = get_char_list_soup(index)
-        list_all_char_db = get_all_char_id_name(soup)
+    for page_index in range(1,4):
+        soup = get_char_list_soup(page_index)
+        list_all_char_db = get_all_char_id_name(page_index, soup)
         for index ,char in enumerate(list_all_char_db):
             # df_Data, df_Action_Skill = get_char_detail((index+1),char)
-            char = get_char_detail((index+1),char)
+            char = get_char_detail(index,char)
             states = find_state(char.Action_Skill)
             for s in states:
                 print char.Data['Data'][1] , s
