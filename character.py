@@ -20,11 +20,11 @@ class character():
         self.Limit_Burst = 0
         self.States = []
 
-        self.get_char_detail()
+        # self.get_char_detail()
 
     def get_Type(self,page_index):
         return {
-            '1':'進戰',
+            '1':'近戰',
             '2':'中程',
             '3':'遠距'
         }.get(page_index,'error Type')
@@ -39,9 +39,10 @@ class character():
 
         status_list = status.get_status_list()
         for state in status_list['name']:
+            print(state)
             # 第二項為效果
-            if self.Action_Skill['Action_Skill'][2].find(state) > 0:
-                self.States.append(state)
+            # if self.Action_Skill['Action_Skill'][2].find(state) > 0:
+            #     self.States.append(state)
 
             # LB 和 States 未作
 
@@ -63,9 +64,9 @@ class character():
         return df
 
     def _print(self):
-        print self.char_Type, self.char_Index,  self.char_Id, self.char_Name
+        print(self.char_Type, self.char_Index,  self.char_Id, self.char_Name)
         # print (self.Basic_Info)
         # print (self.Action_Skill)
-        for s in self.States:
-            print (s)
+        # for s in self.States:
+        #     print (s)
             

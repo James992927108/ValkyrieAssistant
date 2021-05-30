@@ -1,0 +1,3198 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" name="viewport"/>
+<meta content="telephone=no" name="format-detection">
+<meta content="攻略" name="title"/>
+<meta content="#2d88ef" name="msapplication-TileColor"/>
+<meta content="/favicons/mstile-144x144.png" name="msapplication-TileImage"/>
+<link href="/favicons/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon"/>
+<link href="/favicons/favicon.ico" rel="icon" type="image/vnd.microsoft.icon"/>
+<link href="/favicons/apple-touch-icon-57x57.png" rel="apple-touch-icon" sizes="57x57"/>
+<link href="/favicons/apple-touch-icon-60x60.png" rel="apple-touch-icon" sizes="60x60"/>
+<link href="/favicons/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72"/>
+<link href="/favicons/apple-touch-icon-76x76.png" rel="apple-touch-icon" sizes="76x76"/>
+<link href="/favicons/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114"/>
+<link href="/favicons/apple-touch-icon-120x120.png" rel="apple-touch-icon" sizes="120x120"/>
+<link href="/favicons/apple-touch-icon-144x144.png" rel="apple-touch-icon" sizes="144x144"/>
+<link href="/favicons/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152"/>
+<link href="/favicons/apple-touch-icon-180x180.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicons/android-chrome-192x192.png" rel="icon" sizes="192x192" type="image/png"/>
+<link href="/favicons/favicon-48x48.png" rel="icon" sizes="48x48" type="image/png"/>
+<link href="/favicons/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png"/>
+<link href="/favicons/favicon-160x160.png" rel="icon" sizes="96x96" type="image/png"/>
+<link href="/favicons/favicon-196x196.png" rel="icon" sizes="96x96" type="image/png"/>
+<link href="/favicons/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/favicons/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicons/manifest.json" rel="manifest"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet"/>
+<title>攻略</title>
+<link href="../../stylesheets/all.css" rel="stylesheet">
+<link href="../../stylesheets/capture_list.css" rel="stylesheet">
+<link href="../../stylesheets/lazyload.css" rel="stylesheet">
+<script src="../../javascripts/all.js"></script>
+<script src="../../javascripts/jquery.js"></script>
+<script src="../../javascripts/filter.js"></script>
+<script src="../../javascripts/js.cookie.js"></script>
+<script src="../../javascripts/lazysizes.js"></script>
+<script src="../../javascripts/change_game_color.js"></script>
+<script src="../../javascripts/resize_container.js"></script>
+<script>
+    window.onload = function() {
+      $(window).on('orientationchange', function() {
+          var angle = (screen && screen.orientation && screen.orientation.angle) || window.orientation || 0;
+          if(angle % 180 !== 0) {
+              var ua = navigator.userAgent;
+              if ((is.mobile() || is.tablet()) && ua.indexOf('Jam') === -1) {
+                  var from_param = location.search.match(/from=(.*?)$/);
+                  if (from_param && from_param.length > 1 && from_param[1] === 'game_app') {
+                      var top_url = location.protocol + '//' + location.host + location.pathname;
+                      Cookies.remove('vcon_ww_top');
+                      Cookies.remove('vcon_ww_top_url');
+                      Cookies.set('vcon_ww_top_url', top_url);
+                  } else if (from_param && from_param.length > 1 && from_param[1] === 'game_app_top') {
+                      Cookies.remove('vcon_ww_top');
+                      Cookies.remove('vcon_ww_top_url');
+                      Cookies.set('vcon_ww_top', 1);
+                  }
+              }
+          } else {
+              Cookies.remove('vcon_ww_top');
+              Cookies.remove('vcon_ww_top_url');
+          }
+          resize_container();
+      }).trigger('orientationchange');
+
+      var hash = location.hash;
+      var result = hash.replace(/#/g, "");
+      var type_tab = $("#type_" + result);
+      if (type_tab) {
+          type_tab.css('background-color', '#009bc8');
+          type_tab.css('color', '#fff');
+      }
+
+      $('.container-box').fadeIn(300);
+
+      if ("zh_TW" === 'ru') {
+          $("body").css('font-family', 'Roboto Condensed, sans-serif');
+      }
+
+      $("#vcon_f_ww_action_skill_element_filter").click( function() {
+          $(this).toggleClass('active');
+          create_action_skill_element_filter(true);
+      });
+      function create_action_skill_element_filter(is_cookie_reset) {
+          var action_skill_element_list = {
+              "0" : "<img class='filter_attribute-img' src='/images/icon_attribute/icon_attribute_00.png'>",
+              "1" : "<img class='filter_attribute-img' src='/images/icon_attribute/icon_attribute_01.png'>",
+              "2" : "<img class='filter_attribute-img' src='/images/icon_attribute/icon_attribute_02.png'>",
+              "3" : "<img class='filter_attribute-img' src='/images/icon_attribute/icon_attribute_03.png'>",
+              "4" : "<img class='filter_attribute-img' src='/images/icon_attribute/icon_attribute_04.png'>",
+              "5" : "<img class='filter_attribute-img' src='/images/icon_attribute/icon_attribute_05.png'>",
+              "6" : "<span class='filter_attribute-img'>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</span>",
+          };
+
+          change_filter_checkboxs('vcon_f_ww_action_skill_element', 'アクションスキル属性', action_skill_element_list, is_cookie_reset);
+      }
+
+      $("#vcon_f_ww_awakening_action_skill_element_filter").click( function() {
+          $(this).toggleClass('active');
+          create_awakening_action_skill_element_filter(true);
+      });
+      function create_awakening_action_skill_element_filter(is_cookie_reset) {
+          var awakening_action_skill_element_list = {
+              "1" : "<img class='filter_attribute-img' src='/images/icon_attribute/icon_attribute_01.png'>",
+              "2" : "<img class='filter_attribute-img' src='/images/icon_attribute/icon_attribute_02.png'>",
+              "3" : "<img class='filter_attribute-img' src='/images/icon_attribute/icon_attribute_03.png'>",
+              "4" : "<img class='filter_attribute-img' src='/images/icon_attribute/icon_attribute_04.png'>",
+              "5" : "<img class='filter_attribute-img' src='/images/icon_attribute/icon_attribute_05.png'>",
+          };
+
+          change_filter_checkboxs('vcon_f_ww_awakening_action_skill_element', 'アクションスキル属性(覚醒)', awakening_action_skill_element_list, is_cookie_reset);
+      }
+
+      $("#vcon_f_ww_race_filter").click( function() {
+          $(this).toggleClass('active');
+          create_race_filter(true);
+      });
+      function create_race_filter(is_cookie_reset) {
+          $(this).toggleClass('active');
+          var race_list = {
+              "1" : "神族",
+              "2" : "人類",
+              "3" : "精靈",
+              "4" : "矮人",
+              "5" : "亞人",
+              "6" : "巨人",
+              "7" : "神獸",
+          };
+
+          change_filter_checkboxs('vcon_f_ww_race', '種族', race_list, is_cookie_reset);
+      }
+
+      $("#vcon_f_ww_init_star_filter").click( function() {
+          $(this).toggleClass('active');
+          create_init_star_filter(true);
+      });
+      function create_init_star_filter(is_cookie_reset) {
+        $(this).toggleClass('active');
+        var init_star_list = {
+            "1" : "1☆",
+            "2" : "2☆",
+            "3" : "3☆",
+        };
+
+        change_filter_checkboxs('vcon_f_ww_init_star', '初期レアリティ', init_star_list, is_cookie_reset);
+      }
+
+      $("#vcon_f_ww_gender_filter").click( function() {
+          $(this).toggleClass('active');
+          create_gender_filter(true);
+      });
+      function create_gender_filter(is_cookie_reset) {
+        $(this).toggleClass('active');
+        var gender_list = {
+            "1" : "♂",
+            "2" : "♀",
+        };
+
+        change_filter_checkboxs('vcon_f_ww_gender', '性別', gender_list, is_cookie_reset);
+      }
+
+      $("#vcon_f_ww_revision_attr_filter").click( function() {
+          $(this).toggleClass('active');
+          create_revision_attr_filter(true);
+      });
+      function create_revision_attr_filter(is_cookie_reset) {
+        $(this).toggleClass('active');
+        var revision_attr_list = {
+            "revision_attr_fire" : "火",
+            "revision_attr_light" : "光",
+            "revision_attr_dark" : "暗",
+            "revision_attr_water" : "水",
+            "revision_attr_earth" : "木",
+        };
+
+        change_filter_checkboxs('vcon_f_ww_revision_attr', '属性耐性', revision_attr_list, is_cookie_reset);
+      }
+
+
+      $("div#input_filters input[type='radio']").click( function() {
+          checkbox_filter();
+      });
+
+      cookie_size = 0;
+      cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+          cookie = cookies[i].split('=');
+          cookie_key = cookies[i].split('[');
+          cookie_key = cookie_key[0];
+          if (cookie[0].indexOf('vcon_f_ww_') !== -1) {
+              cookie_size += 1;
+          }
+      }
+
+      if (cookie_size >= 1) {
+          create_action_skill_element_filter(false);
+          create_awakening_action_skill_element_filter(false);
+          create_race_filter(false);
+          create_init_star_filter(false);
+          create_gender_filter(false);
+          create_revision_attr_filter(false);
+          cookie_select();
+      } else {
+          $("#vcon_f_ww_new_sort_asc").prop('checked', true);
+          $("#vcon_f_ww_new_sort_asc").click();
+      }
+      var filter_param = location.search.match(/\?filter=(.*)$/);
+      if (filter_param && filter_param.length > 1 && filter_param[1] === 'init') {
+          history.replaceState('', '', document.location.toString().replace(location.search, location.search.replace(/init/, "")));
+          filter_reset();
+          $("#vcon_f_ww_new_sort_asc").prop('checked', true);
+          $("#vcon_f_ww_new_sort_asc").click();
+      }
+    };
+
+    $(window).resize(function () {
+        resize_container();
+    });
+  </script>
+</link></link></link></meta></head>
+<body>
+<div class="container">
+<div class="container-box-left"></div>
+<div class="container-box" style="display: none">
+<div id="header-img__zh_TW"></div>
+<nav class="tab">
+<a href="../character_list/1.html#1" id="type_1">近戰</a>
+<a href="../character_list/2.html#2" id="type_2">中程</a>
+<a href="../character_list/3.html#3" id="type_3">遠距</a>
+</nav>
+<div class="input_filter" id="input_filters">
+<div class="filter_title" id="vcon_f_ww_race_filter"><p class="filter_title-text">種族</p></div>
+<div id="input_vcon_f_ww_race_filters"></div>
+<div class="filter_title" id="vcon_f_ww_init_star_filter"><p class="filter_title-text">初期 星等</p></div>
+<div id="input_vcon_f_ww_init_star_filters"></div>
+<div class="filter_title" id="vcon_f_ww_gender_filter"><p class="filter_title-text">性別</p></div>
+<div id="input_vcon_f_ww_gender_filters"></div>
+<div class="filter_title" id="vcon_f_ww_revision_attr_filter"><p class="filter_title-text">屬性耐性</p></div>
+<div id="input_vcon_f_ww_revision_attr_filters"></div>
+<div class="filter_title" id="vcon_f_ww_action_skill_element_filter"><p class="filter_title-text">主動技能屬性</p></div>
+<div class="input_items" id="input_vcon_f_ww_action_skill_element_filters"></div>
+<div class="filter_title" id="vcon_f_ww_awakening_action_skill_element_filter"><p class="filter_title-text">主動技能屬性（覺醒）</p></div>
+<div class="input_items" id="input_vcon_f_ww_awakening_action_skill_element_filters"></div>
+<div class="filter_reset"><button class="filter_reset-button" onclick="filter_reset()">解除篩選</button></div>
+<div class="sort_title" id="sort">
+<span class="sort_title-text">變換順序</span>
+<span id="radio_sort_text_new"><label class="radio_items"><input id="vcon_f_ww_new_sort_asc" name="radio_sort" type="radio" value="new_sort_asc"/><span>最新</span></label></span>
+<span id="radio_sort_text_party"><label class="radio_items"><input id="vcon_f_ww_pt_sort_asc" name="radio_sort" type="radio" value="pt_sort_asc"/><span>隊伍排序</span></label></span>
+</div>
+</div>
+<table class="main" id="filter">
+</table>
+<table class="main">
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="0">
+<input name="vcon_f_ww_pt_sort" type="hidden" value="74">
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/102071.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102071_1.png"/>
+</div>
+<p class="list_item_name">艾斯卡諾</p>
+</a>
+</input></input></td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="1"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="104"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="5,"/>
+<a href="../character_detail/101040.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101040_1.png"/>
+</div>
+<p class="list_item_name">賽多里斯</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="2"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="105"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101039.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101039_1.png"/>
+</div>
+<p class="list_item_name">艾斯塔洛薩</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="3"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="173"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value=","/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102070.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102070_1.png"/>
+</div>
+<p class="list_item_name">糕點師蕾緹希亞</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="4"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="83"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="5,"/>
+<a href="../character_detail/102069.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102069_1.png"/>
+</div>
+<p class="list_item_name">悠久變革者：薰</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="5"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="84"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102068.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102068_1.png"/>
+</div>
+<p class="list_item_name">創始默示者薰</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="6"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="66"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="1,"/>
+<a href="../character_detail/102067.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102067_1.png"/>
+</div>
+<p class="list_item_name">烈火變革者：明日香</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="7"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="96"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/105023.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105023_1.png"/>
+</div>
+<p class="list_item_name">夏提雅</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="8"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="142"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="6,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105022.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105022_1.png"/>
+</div>
+<p class="list_item_name">雅兒貝德</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="9"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="97"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105024.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105024_1.png"/>
+</div>
+<p class="list_item_name">炎狼少女斯庫爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="10"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="82"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102066.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102066_1.png"/>
+</div>
+<p class="list_item_name">劍豪真樋</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="11"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="136"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101038.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101038_1.png"/>
+</div>
+<p class="list_item_name">一閃之戲神洛基</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="12"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="49"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101037.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101037_1.png"/>
+</div>
+<p class="list_item_name">甜美的寶石劍姬嬌德</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="13"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="110"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/106018.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106018_1.png"/>
+</div>
+<p class="list_item_name">炎檄反叛者斯雷姆</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="14"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="80"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102065.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102065_1.png"/>
+</div>
+<p class="list_item_name">清廉反叛者塞勒絲緹亞</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="15"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="71"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101036.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101036_1.png"/>
+</div>
+<p class="list_item_name">蒼夏之緋紅女神芙雷</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="16"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="3"/>
+<input name="vcon_f_ww_race" type="hidden" value="4"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/104010.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_104010_1.png"/>
+</div>
+<p class="list_item_name">雙星反叛者荷特瑪</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="17"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="114"/>
+<input name="vcon_f_ww_race" type="hidden" value="3"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/103012.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_103012_1.png"/>
+</div>
+<p class="list_item_name">熱烈之守護劍士愛希亞</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="18"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="60"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105021.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105021_1.png"/>
+</div>
+<p class="list_item_name">聖光之白狼劍士盧布斯</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="19"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="79"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="5,"/>
+<a href="../character_detail/102064.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102064_1.png"/>
+</div>
+<p class="list_item_name">音速的索尼克</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="20"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="89"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102063.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102063_1.png"/>
+</div>
+<p class="list_item_name">餓狼</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="21"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="88"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/102062.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102062_1.png"/>
+</div>
+<p class="list_item_name">埼玉</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="22"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="124"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value=","/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/101035.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101035_1.png"/>
+</div>
+<p class="list_item_name">蕾娜絲</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="23"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="67"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101030.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101030_1.png"/>
+</div>
+<p class="list_item_name">白虎神紫如</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="24"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="10"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101034.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101034_1.png"/>
+</div>
+<p class="list_item_name">侍從神芙拉</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="25"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="98"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/106016.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106016_1.png"/>
+</div>
+<p class="list_item_name">虛王之使徒孛魯梭</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="26"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="87"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102061.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102061_1.png"/>
+</div>
+<p class="list_item_name">謀略反叛者瓦爾托斯</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="27"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="65"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="1,"/>
+<a href="../character_detail/102057.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102057_1.png"/>
+</div>
+<p class="list_item_name">明日香＆維德佛爾尼爾</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="28"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="40"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102056.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102056_1.png"/>
+</div>
+<p class="list_item_name">真嗣＆芬里爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="29"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="93"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102060.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102060_1.png"/>
+</div>
+<p class="list_item_name">天醒之劍聖賽娜</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="30"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="103"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/102055.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102055_1.png"/>
+</div>
+<p class="list_item_name">雷炎之滅龍魔導士納茲</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="31"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="122"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102054.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102054_1.png"/>
+</div>
+<p class="list_item_name">艾爾莎‧史卡雷特</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="32"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="5"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="1,"/>
+<a href="../character_detail/102053.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102053_1.png"/>
+</div>
+<p class="list_item_name">納茲‧多拉格尼爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="33"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="63"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102059.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102059_1.png"/>
+</div>
+<p class="list_item_name">水鐮使霜舞</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="34"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="6"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101031.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101031_1.png"/>
+</div>
+<p class="list_item_name">朱雀神熙燭</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="35"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="8"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101033.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101033_1.png"/>
+</div>
+<p class="list_item_name">子神香之繪</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="36"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="7"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101032.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101032_1.png"/>
+</div>
+<p class="list_item_name">創國神伊邪那岐</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="37"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="167"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105020.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105020_1.png"/>
+</div>
+<p class="list_item_name">絕望之機甲拳士希芙</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="38"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="4"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101029.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101029_1.png"/>
+</div>
+<p class="list_item_name">玄武神含鳴</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="39"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="59"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105019.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105019_1.png"/>
+</div>
+<p class="list_item_name">白狼戰士盧布斯</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="40"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="1"/>
+<input name="vcon_f_ww_race" type="hidden" value="7"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/107008.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_107008_1.png"/>
+</div>
+<p class="list_item_name">灼熱變革者林德蟲</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="41"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="72"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105018.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105018_1.png"/>
+</div>
+<p class="list_item_name">火龍少女紐特</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="42"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="28"/>
+<input name="vcon_f_ww_race" type="hidden" value="3"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/103010.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_103010_1.png"/>
+</div>
+<p class="list_item_name">雷暴娘斯帕琪</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="43"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="113"/>
+<input name="vcon_f_ww_race" type="hidden" value="3"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/103011.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_103011_1.png"/>
+</div>
+<p class="list_item_name">監獄女帝伊本希亞</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="44"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="27"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/106015.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106015_1.png"/>
+</div>
+<p class="list_item_name">盔甲巨人</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="45"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="39"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="1,"/>
+<a href="../character_detail/102051.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102051_1.png"/>
+</div>
+<p class="list_item_name">艾連</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="46"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="174"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="2,"/>
+<a href="../character_detail/102052.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102052_1.png"/>
+</div>
+<p class="list_item_name">米卡莎</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="47"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="160"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101028.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101028_1.png"/>
+</div>
+<p class="list_item_name">機甲劍士瑪格尼</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="48"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="101"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101026.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101026_1.png"/>
+</div>
+<p class="list_item_name">司法神凡賽堤</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="49"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="148"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101024.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101024_1.png"/>
+</div>
+<p class="list_item_name">白翼之女武神布倫希爾德</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="50"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="128"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102050.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102050_1.png"/>
+</div>
+<p class="list_item_name">暗殺忍者朧</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="51"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="106"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102049.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102049_1.png"/>
+</div>
+<p class="list_item_name">海兵少女艾爾莎</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="52"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="81"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101027.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101027_1.png"/>
+</div>
+<p class="list_item_name">青龍神醉林</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="53"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="61"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="3,"/>
+<a href="../character_detail/106014.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106014_1.png"/>
+</div>
+<p class="list_item_name">義勇變革者貝格爾米爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="54"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="126"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="5,"/>
+<a href="../character_detail/101025.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101025_1.png"/>
+</div>
+<p class="list_item_name">墮天變革者桑格里德</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="55"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="125"/>
+<input name="vcon_f_ww_race" type="hidden" value="4"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/104008.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_104008_1.png"/>
+</div>
+<p class="list_item_name">暗殺鬥士切麗</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="56"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="29"/>
+<input name="vcon_f_ww_race" type="hidden" value="3"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/103009.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_103009_1.png"/>
+</div>
+<p class="list_item_name">精靈使艾希絲</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="57"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="130"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101023.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101023_1.png"/>
+</div>
+<p class="list_item_name">揚波之女貝蘿度格達</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="58"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="58"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/106013.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106013_1.png"/>
+</div>
+<p class="list_item_name">魔人史爾特爾 疑似EVA化形態</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="59"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="36"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/102046.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102046_1.png"/>
+</div>
+<p class="list_item_name">零＆Mark.09</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="60"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="141"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102047.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102047_1.png"/>
+</div>
+<p class="list_item_name">真理＆暫設5號機</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="61"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="23"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102048.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102048_1.png"/>
+</div>
+<p class="list_item_name">真嗣＆初號機</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="62"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="0"/>
+<input name="vcon_f_ww_race" type="hidden" value="3"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/103007.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_103007_1.png"/>
+</div>
+<p class="list_item_name">靈獸使卡姆莉</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="63"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="48"/>
+<input name="vcon_f_ww_race" type="hidden" value="3"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/103005.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_103005_1.png"/>
+</div>
+<p class="list_item_name">蛇劍使蒂奈</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="64"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="42"/>
+<input name="vcon_f_ww_race" type="hidden" value="3"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/103008.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_103008_1.png"/>
+</div>
+<p class="list_item_name">雙劍騎士索魯緹絲</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="65"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="52"/>
+<input name="vcon_f_ww_race" type="hidden" value="4"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/104007.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_104007_1.png"/>
+</div>
+<p class="list_item_name">炸彈機士帕路波</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="66"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="162"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101022.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101022_1.png"/>
+</div>
+<p class="list_item_name">冥神歐西里斯</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="67"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="146"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102045.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102045_1.png"/>
+</div>
+<p class="list_item_name">吉爾桑達</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="68"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="75"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/106012.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106012_1.png"/>
+</div>
+<p class="list_item_name">黛安娜</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="69"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="168"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102044.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102044_1.png"/>
+</div>
+<p class="list_item_name">班</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="70"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="30"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="5,"/>
+<a href="../character_detail/101021.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101021_1.png"/>
+</div>
+<p class="list_item_name">梅里奧達斯</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="71"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="32"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/105017.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105017_1.png"/>
+</div>
+<p class="list_item_name">[機甲拳士]鏡音鈴</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="72"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="21"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102043.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102043_1.png"/>
+</div>
+<p class="list_item_name">王國騎士維奧拉</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="73"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="91"/>
+<input name="vcon_f_ww_race" type="hidden" value="3"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/103006.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_103006_1.png"/>
+</div>
+<p class="list_item_name">風來少女波爾多</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="74"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="164"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102042.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102042_1.png"/>
+</div>
+<p class="list_item_name">炎刀姬友惠</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="75"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="26"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="1,"/>
+<a href="../character_detail/106011.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106011_1.png"/>
+</div>
+<p class="list_item_name">憤怒繼承者摩格斯拉希爾</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="76"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="17"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_earth,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="6,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/106009.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106009_1.png"/>
+</div>
+<p class="list_item_name">巨壁少女菲妮婭</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="77"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="12"/>
+<input name="vcon_f_ww_race" type="hidden" value="4"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="6,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/104006.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_104006_1.png"/>
+</div>
+<p class="list_item_name">操縱士華納爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="78"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="45"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101020.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101020_1.png"/>
+</div>
+<p class="list_item_name">劈瓜之女武神蘭蒂格瑞絲</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="79"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="129"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="3,"/>
+<a href="../character_detail/101019.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101019_1.png"/>
+</div>
+<p class="list_item_name">寶石劍姬嬌德</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="80"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="131"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="5,"/>
+<a href="../character_detail/102041.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102041_1.png"/>
+</div>
+<p class="list_item_name">強欲繼承者科塔娜</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="81"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="62"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102036.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102036_1.png"/>
+</div>
+<p class="list_item_name">王國騎士貝斯梅爾達</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="82"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="165"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102040.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102040_1.png"/>
+</div>
+<p class="list_item_name">佐倉杏子</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="83"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="34"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_water,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102039.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102039_1.png"/>
+</div>
+<p class="list_item_name">美樹沙耶香</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="84"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="171"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="2,"/>
+<a href="../character_detail/102038.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102038_1.png"/>
+</div>
+<p class="list_item_name">冰姬羅貝麗雅</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="85"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="2"/>
+<input name="vcon_f_ww_race" type="hidden" value="7"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value=","/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="6,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/107007.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_107007_1.png"/>
+</div>
+<p class="list_item_name">暴食繼承者君臨菲爾西</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="86"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="102"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/106010.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106010_1.png"/>
+</div>
+<p class="list_item_name">饗宴主巴利托斯</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="87"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="54"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102035.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102035_1.png"/>
+</div>
+<p class="list_item_name">狂想少女艾斯特麗雅</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="88"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="14"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="6,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101018.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101018_1.png"/>
+</div>
+<p class="list_item_name">女武神赫爾薇爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="89"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="38"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="1,"/>
+<a href="../character_detail/101017.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101017_1.png"/>
+</div>
+<p class="list_item_name">女武神明日香</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="90"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="37"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="1,"/>
+<a href="../character_detail/102032.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102032_1.png"/>
+</div>
+<p class="list_item_name">式波·明日香·蘭格雷</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="91"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="15"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="6,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/102033.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102033_1.png"/>
+</div>
+<p class="list_item_name">綾波零</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="92"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="94"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="2,"/>
+<a href="../character_detail/102034.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102034_1.png"/>
+</div>
+<p class="list_item_name">碇真嗣</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="93"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="43"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105015.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105015_1.png"/>
+</div>
+<p class="list_item_name">機刀少女日向</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="94"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="69"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102037.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102037_1.png"/>
+</div>
+<p class="list_item_name">雙槍使維利</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="95"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="9"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101016.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101016_1.png"/>
+</div>
+<p class="list_item_name">黑守神基米爾</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="96"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="46"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101015.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101015_1.png"/>
+</div>
+<p class="list_item_name">女武神蘭蒂格瑞絲</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="97"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="154"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105014.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105014_1.png"/>
+</div>
+<p class="list_item_name">黑天狗八手</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="98"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="19"/>
+<input name="vcon_f_ww_race" type="hidden" value="3"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_earth,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/103004.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_103004_1.png"/>
+</div>
+<p class="list_item_name">守護劍士愛希亞</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="99"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="158"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102026.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102026_1.png"/>
+</div>
+<p class="list_item_name">棍術師鳴華</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="100"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="24"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105016.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105016_1.png"/>
+</div>
+<p class="list_item_name">影者熊貓祥彤</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="101"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="33"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102031.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102031_1.png"/>
+</div>
+<p class="list_item_name">新春光騎士克爾修絲</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="102"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="156"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102029.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102029_1.png"/>
+</div>
+<p class="list_item_name">卡琳</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="103"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="99"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102028.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102028_1.png"/>
+</div>
+<p class="list_item_name">殺意隆</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="104"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="161"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102030.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102030_1.png"/>
+</div>
+<p class="list_item_name">倩咪</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="105"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="51"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102027.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102027_1.png"/>
+</div>
+<p class="list_item_name">隆</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="106"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="78"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105009.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105009_1.png"/>
+</div>
+<p class="list_item_name">青蛙劍士弗羅卡</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="107"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="144"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="3,"/>
+<a href="../character_detail/105013.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105013_1.png"/>
+</div>
+<p class="list_item_name">死鐮少女莎斯基雅</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="108"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="64"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105011.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105011_1.png"/>
+</div>
+<p class="list_item_name">獅王盧布</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="109"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="56"/>
+<input name="vcon_f_ww_race" type="hidden" value="4"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="2,"/>
+<a href="../character_detail/104005.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_104005_1.png"/>
+</div>
+<p class="list_item_name">踢姬兀琳</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="110"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="70"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="1,"/>
+<a href="../character_detail/101013.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101013_1.png"/>
+</div>
+<p class="list_item_name">緋紅女神芙雷</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="111"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="44"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101014.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101014_1.png"/>
+</div>
+<p class="list_item_name">女武神諾恩</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="112"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="68"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102023.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102023_1.png"/>
+</div>
+<p class="list_item_name">光騎士克爾修絲</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="113"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="25"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/106007.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106007_1.png"/>
+</div>
+<p class="list_item_name">守護神貝斯特拉</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="114"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="20"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="6,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105012.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105012_1.png"/>
+</div>
+<p class="list_item_name">不死者咒姬</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="115"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="112"/>
+<input name="vcon_f_ww_race" type="hidden" value="4"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/104004.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_104004_1.png"/>
+</div>
+<p class="list_item_name">馴獸師佩特菈</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="116"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="76"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105010.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105010_1.png"/>
+</div>
+<p class="list_item_name">酒吞鬼醉歌</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="117"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="41"/>
+<input name="vcon_f_ww_race" type="hidden" value="4"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="6,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/104003.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_104003_1.png"/>
+</div>
+<p class="list_item_name">鍛造屋韋蘭</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="118"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="152"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102018.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102018_1.png"/>
+</div>
+<p class="list_item_name">暗殺天使克拉麗絲</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="119"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="172"/>
+<input name="vcon_f_ww_race" type="hidden" value="3"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/103003.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_103003_1.png"/>
+</div>
+<p class="list_item_name">裁縫師拉米娜</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="120"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="53"/>
+<input name="vcon_f_ww_race" type="hidden" value="7"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="5,"/>
+<a href="../character_detail/107006.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_107006_1.png"/>
+</div>
+<p class="list_item_name">暗獸海德倫</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="121"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="145"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105007.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105007_1.png"/>
+</div>
+<p class="list_item_name">古娜‧戴雅門度</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="122"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="121"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105008.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105008_1.png"/>
+</div>
+<p class="list_item_name">奧米加‧路卡爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="123"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="55"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102022.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102022_1.png"/>
+</div>
+<p class="list_item_name">八神庵</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="124"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="95"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102021.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102021_1.png"/>
+</div>
+<p class="list_item_name">草薙京</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="125"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="133"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="6,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="3,"/>
+<a href="../character_detail/105006.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105006_1.png"/>
+</div>
+<p class="list_item_name">小初音未來</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="126"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="149"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102020.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102020_1.png"/>
+</div>
+<p class="list_item_name">浪花的盾士路加</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="127"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="151"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102019.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102019_1.png"/>
+</div>
+<p class="list_item_name">鐵球使史黛菈</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="128"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="120"/>
+<input name="vcon_f_ww_race" type="hidden" value="4"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/104002.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_104002_1.png"/>
+</div>
+<p class="list_item_name">將姬索琳</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="129"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="137"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102013.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102013_1.png"/>
+</div>
+<p class="list_item_name">Lancer</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="130"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="90"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102012.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102012_1.png"/>
+</div>
+<p class="list_item_name">Archer</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="131"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="116"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102011.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102011_1.png"/>
+</div>
+<p class="list_item_name">Saber【禮服】</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="132"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="115"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102010.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102010_1.png"/>
+</div>
+<p class="list_item_name">Saber</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="133"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="35"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102009.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102009_1.png"/>
+</div>
+<p class="list_item_name">衛宮士郎</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="134"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="18"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="5,"/>
+<a href="../character_detail/105005.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105005_1.png"/>
+</div>
+<p class="list_item_name">少女兵器瑪提莉亞</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="135"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="155"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="5,"/>
+<a href="../character_detail/102017.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102017_1.png"/>
+</div>
+<p class="list_item_name">退魔師菖蒲</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="136"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="147"/>
+<input name="vcon_f_ww_race" type="hidden" value="7"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/107005.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_107005_1.png"/>
+</div>
+<p class="list_item_name">聖獸斯雷普尼爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="137"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="169"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/102016.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102016_1.png"/>
+</div>
+<p class="list_item_name">聖職者利都亞</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="138"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="111"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102015.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102015_1.png"/>
+</div>
+<p class="list_item_name">狂戰士貝爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="139"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="107"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="1,"/>
+<a href="../character_detail/106006.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106006_1.png"/>
+</div>
+<p class="list_item_name">炎妃辛莫拉</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="140"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="117"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="5,"/>
+<a href="../character_detail/101012.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101012_1.png"/>
+</div>
+<p class="list_item_name">女武神布倫希爾德</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="141"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="31"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="5,"/>
+<a href="../character_detail/106005.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106005_1.png"/>
+</div>
+<p class="list_item_name">虛王孛魯梭</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="142"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="175"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102014.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102014_1.png"/>
+</div>
+<p class="list_item_name">大鐮使彌亞</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="143"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="132"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="2,"/>
+<a href="../character_detail/101011.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101011_1.png"/>
+</div>
+<p class="list_item_name">孤高神威瑟爾</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="144"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="119"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101010.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101010_1.png"/>
+</div>
+<p class="list_item_name">破魔的雷神索爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="145"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="153"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105004.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105004_1.png"/>
+</div>
+<p class="list_item_name">貓女米雪兒</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="146"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="163"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/102008.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102008_1.png"/>
+</div>
+<p class="list_item_name">暗器手賽夏</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="147"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="143"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101008.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101008_1.png"/>
+</div>
+<p class="list_item_name">苑神摩里</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="148"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="13"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="6,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="2,"/>
+<a href="../character_detail/102006.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102006_1.png"/>
+</div>
+<p class="list_item_name">盾士路加</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="149"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="166"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/105003.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105003_1.png"/>
+</div>
+<p class="list_item_name">機甲拳士希芙</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="150"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="85"/>
+<input name="vcon_f_ww_race" type="hidden" value="7"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/107004.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_107004_1.png"/>
+</div>
+<p class="list_item_name">南瓜地獄犬加姆</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="151"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="135"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101009.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101009_1.png"/>
+</div>
+<p class="list_item_name">片翼的戲神洛基</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="152"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="139"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="5,"/>
+<a href="../character_detail/102007.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102007_1.png"/>
+</div>
+<p class="list_item_name">暗黑騎士札特</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="153"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="16"/>
+<input name="vcon_f_ww_race" type="hidden" value="4"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/104001.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_104001_1.png"/>
+</div>
+<p class="list_item_name">精靈使妮季</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="154"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="176"/>
+<input name="vcon_f_ww_race" type="hidden" value="7"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="3,"/>
+<a href="../character_detail/107003.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_107003_1.png"/>
+</div>
+<p class="list_item_name">狂龍法芙尼爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="155"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="86"/>
+<input name="vcon_f_ww_race" type="hidden" value="7"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="1"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/107002.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_107002_1.png"/>
+</div>
+<p class="list_item_name">地獄犬加姆</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="156"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="73"/>
+<input name="vcon_f_ww_race" type="hidden" value="7"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="2,"/>
+<a href="../character_detail/107001.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_107001_1.png"/>
+</div>
+<p class="list_item_name">魔獸芬里爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="157"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="100"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="2,"/>
+<a href="../character_detail/106004.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106004_1.png"/>
+</div>
+<p class="list_item_name">海妃埃吉爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="158"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="77"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/106003.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106003_1.png"/>
+</div>
+<p class="list_item_name">冰帝絲卡蒂</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="159"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="22"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="3,"/>
+<a href="../character_detail/106002.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106002_1.png"/>
+</div>
+<p class="list_item_name">岩窟王赫朗格尼爾</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="160"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="57"/>
+<input name="vcon_f_ww_race" type="hidden" value="6"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="1,"/>
+<a href="../character_detail/106001.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_106001_1.png"/>
+</div>
+<p class="list_item_name">魔人史爾特爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="161"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="170"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="3,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105002.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105002_1.png"/>
+</div>
+<p class="list_item_name">槍使索妮雅</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="162"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="109"/>
+<input name="vcon_f_ww_race" type="hidden" value="5"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="1"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/105001.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_105001_1.png"/>
+</div>
+<p class="list_item_name">傭兵庫洛札克</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="163"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="150"/>
+<input name="vcon_f_ww_race" type="hidden" value="3"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="1"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/103002.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_103002_1.png"/>
+</div>
+<p class="list_item_name">劍士蘇雅拉</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="164"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="140"/>
+<input name="vcon_f_ww_race" type="hidden" value="3"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="5,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/103001.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_103001_1.png"/>
+</div>
+<p class="list_item_name">魔劍士威爾法</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="165"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="138"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="0,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102005.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102005_1.png"/>
+</div>
+<p class="list_item_name">雙劍士莉薩</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="166"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="159"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102004.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102004_1.png"/>
+</div>
+<p class="list_item_name">武士長門</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="167"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="157"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="1,"/>
+<a href="../character_detail/102003.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102003_1.png"/>
+</div>
+<p class="list_item_name">格鬥家飛蘭</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="168"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="92"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_water,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102002.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102002_1.png"/>
+</div>
+<p class="list_item_name">騎士賽娜</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="169"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="127"/>
+<input name="vcon_f_ww_race" type="hidden" value="2"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="1"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/102001.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_102001_1.png"/>
+</div>
+<p class="list_item_name">勇者齊格飛</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="170"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="50"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="6,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101007.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101007_1.png"/>
+</div>
+<p class="list_item_name">常夏的女武神斯庫爾德</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="171"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="123"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value=","/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="2,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="2,"/>
+<a href="../character_detail/101006.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101006_1.png"/>
+</div>
+<p class="list_item_name">戰神絲露滋</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="172"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="11"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="2"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="6,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101005.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101005_1.png"/>
+</div>
+<p class="list_item_name">守神海姆達爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="173"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="108"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_fire,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="1,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value=","/>
+<a href="../character_detail/101004.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101004_1.png"/>
+</div>
+<p class="list_item_name">軍神提爾</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="174"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="134"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,revision_attr_dark,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/101003.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101003_1.png"/>
+</div>
+<p class="list_item_name">戲神洛基</p>
+</a>
+</td>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="175"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="118"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="3"/>
+<input name="vcon_f_ww_gender" type="hidden" value="1"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_earth,revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/101002.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101002_1.png"/>
+</div>
+<p class="list_item_name">雷神索爾</p>
+</a>
+</td>
+</tr>
+<tr>
+<td class="filter">
+<input name="vcon_f_ww_new_sort" type="hidden" value="176"/>
+<input name="vcon_f_ww_pt_sort" type="hidden" value="47"/>
+<input name="vcon_f_ww_race" type="hidden" value="1"/>
+<input name="vcon_f_ww_init_star" type="hidden" value="1"/>
+<input name="vcon_f_ww_gender" type="hidden" value="2"/>
+<input name="vcon_f_ww_revision_attr" seach="or" type="hidden" value="revision_attr_light,"/>
+<input name="vcon_f_ww_action_skill_element" seach="and" type="hidden" value="4,"/>
+<input name="vcon_f_ww_awakening_action_skill_element" seach="and" type="hidden" value="4,"/>
+<a href="../character_detail/101001.html">
+<div class="icons">
+<img class="icon lazyload" data-src="/images/character/icon_character_101001_1.png"/>
+</div>
+<p class="list_item_name">女武神斯庫爾德</p>
+</a>
+</td>
+<td class="no_boder"></td>
+<td class="no_boder"></td>
+<td class="no_boder"></td>
+</tr>
+</table>
+<span class="links"> <div class="link-container">
+<hr/><a class="link-block__link" href="../index.html"><p class="link-block__main-text">&lt;&lt; TOP</p></a><hr/>
+</div>
+</span>
+</div>
+<div class="container-box-right"></div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-77529111-5', 'auto');
+  ga('send', 'pageview');
+</script>
