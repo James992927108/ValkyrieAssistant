@@ -36,7 +36,7 @@ def main():
                 'images/join.png',
                 'images/start_fight.png',
                 'images/ok.png',
-                'images/wait.png'
+                'images/wait.png',
                 'images/next.png']
     threads = []
     for picture in pictures:
