@@ -4,7 +4,6 @@ import threading
 import signal
 import sys
 
-
 class thread_sample(threading.Thread):
     def __init__(self, picture):
         threading.Thread.__init__(self)
@@ -22,7 +21,7 @@ class thread_sample(threading.Thread):
                 x, y = point
                 print(" -> found x: {}, y: {}".format(x, y))
                 pyautogui.click(x, y)
-            time.sleep(10)
+            time.sleep(2)
 
 
 def has_live_threads(threads):
@@ -30,15 +29,8 @@ def has_live_threads(threads):
 
 def main():
 
-    pictures = ['images/battle.png',
-                'images/join_raid.png',
-                'images/join.png',
-                'images/join_button.png',
-                'images/start_battle.png',
-                'images/ok.png',
-                'images/ok-2.png',
-                'images/later.png',
-                'images/next.png'
+    pictures = ['images/repeat.png',
+                'images/ok.png'
                 ]
                 # 'images/dragon_update.png']
     threads = []
@@ -60,7 +52,6 @@ def main():
                 t.kill_received = True
 
     print("Exited")
-
 
 if __name__ == "__main__":
     main()
