@@ -1,38 +1,56 @@
 import pyautogui
 import time
-def onclick(picture):
-    point = pyautogui.locateCenterOnScreen(
-            picture, confidence=0.8, grayscale=True)
-    if point is None:
-        print("Not found")
-        exit()
-    x, y = point
-    pyautogui.click(x, y)
+import threading
+import signal
+import sys
+class thread_sample(threading.Thread):
+    def __init__(self, picture):
+        threading.Thread.__init__(self)
+        self.picture = picture
+        self.kill_received = False
 
-def isVictory():
-    point = pyautogui.locateCenterOnScreen(
-            'images/victory.png', confidence=0.8, grayscale=True)
-    if point is None:
-         return False
-    else:
-        print("Is victory")
-        x, y = point
-        pyautogui.click(x, y)
-        return True
+    def run(self):
+        while not self.kill_received:
+            print("{} is active".format(self.picture))
+            point = pyautogui.locateCenterOnScreen(
+                self.picture, confidence=0.7, grayscale=True)
+            if point is None:
+                print(" -> Not found")
+            else:
+                x, y = point
+                print(" -> found x: {}, y: {}".format(x, y))
+                pyautogui.click(x, y)
+            time.sleep(3)
+
+
+def has_live_threads(threads):
+    return True in [t.is_alive() for t in threads]
+
+def main():
+
+    pictures = ['images/restart.png',
+                'images/again.png'
+                ]
+                # 'images/dragon_update.png']
+    threads = []
+    for picture in pictures:
+        thread = thread_sample(picture)
+        threads.append(thread)
+        thread.start()
+        time.sleep(1)
+
+    while has_live_threads(threads):
+        try:
+            # synchronization timeout of threads kill
+            [t.join(1) for t in threads
+             if t is not None and t.is_alive()]
+        except KeyboardInterrupt:
+            # Ctrl-C handling and send kill to threads
+            print("Sending kill to threads...")
+            for t in threads:
+                t.kill_received = True
+
+    print("Exited")
 
 if __name__ == "__main__":
-    count = 0
-    time_start = time.time()
-    while True:
-        while True:
-            if(isVictory()):
-                time_end = time.time()
-                time.sleep(2)
-                break
-        print("Count: {}, Runtime: {}".format(count, time_end - time_start))
-        onclick('images/restart.png')
-        time.sleep(2)
-        onclick('images/again.png')
-        time.sleep(2)
-        count += 1        
-
+    main()
